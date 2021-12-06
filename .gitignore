@@ -1,0 +1,22 @@
+.idea
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+
+/contentModel.xml
+/projectSettingsUpdater.xml
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+
+# .net local compilation files
+bin/
+obj/
+
+
+/build
+*.db-shm
+*.db-wal
