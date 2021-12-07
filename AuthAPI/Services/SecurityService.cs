@@ -32,9 +32,21 @@ namespace MoneyTrackDatabaseAPI.Services
             var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password));
 
             argon2.Salt = decodedSalt;
-            argon2.DegreeOfParallelism = 1; // four cores
+            argon2.DegreeOfParallelism = 1; // one core
+            argon2.Iterations = 1;
+            argon2.MemorySize = 128*128; // 128 MB
+
+            return argon2.GetBytes(16);
+        }
+        private byte[] HashPasswordV2(string password, string salt)
+        {
+            var decodedSalt = Convert.FromBase64String(salt);
+            var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password));
+
+            argon2.Salt = decodedSalt;
+            argon2.DegreeOfParallelism = 1; // one core
             argon2.Iterations = 2;
-            argon2.MemorySize = 256*256; // 1 GB
+            argon2.MemorySize = 256*256; // 256 MB
 
             return argon2.GetBytes(16);
         }
