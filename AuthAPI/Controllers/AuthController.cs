@@ -36,7 +36,7 @@ namespace MoneyTrackDatabaseAPI.Controllers
                 var dict = new Dictionary<string, Object>();
                 var refreshToken = await authService.GenerateRefreshToken(returnedUser.Id);
                 // await tokenService.AddToken(refreshToken);
-                var accessToken = await authService.GenerateAccessToken(refreshToken);
+                var accessToken = await authService.GenerateAccessToken(returnedUser.Id);
                 dict.Add("token", accessToken);
                 dict.Add("user", returnedUser);
                 CookieOptions cookieOptions = new CookieOptions();

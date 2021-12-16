@@ -60,6 +60,18 @@ namespace MoneyTrackDatabaseAPI.Services
             var token = encoder.Encode(model, secretRefresh);
             return token;
         }
+        public async Task<string> GenerateAccessToken(int userId)
+        {
+         
+            var model = new AuthModel(userId, accessTokenTTL);
+            IJwtAlgorithm algorithm = new HMACSHA512Algorithm();
+            IJsonSerializer serializer = new JsonNetSerializer();
+            IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
+            IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
+
+            var token = encoder.Encode(model, secretAccess);
+            return token;
+        }
 
         public async Task<AuthModel> GetPayloadAccess(string token)
         {
