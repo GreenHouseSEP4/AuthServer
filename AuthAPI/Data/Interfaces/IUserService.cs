@@ -14,5 +14,6 @@ namespace MoneyTrackDatabaseAPI.Data
 
         Task<User> AddDevice(string eui);
         Task<User> DeleteDevice(string eui);
+        Task<List<Device>> GetDevices();
     }
 }

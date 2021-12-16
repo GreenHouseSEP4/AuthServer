@@ -115,5 +115,15 @@ namespace MoneyTrackDatabaseAPI.Data
             found.HashVersion = null;
             return found;
         }
+
+        public async Task<List<Device>> GetDevices()
+        {
+            if(_authService.AuthModel==null)
+            {
+                throw new Exception("Access denied!");
+            }
+            User found = await dbContext.Users.Include(f=>f.Devices).FirstAsync(f =>f.Id == _authService.AuthModel.UserId);
+            return found.Devices;
+        }
     }
 }
