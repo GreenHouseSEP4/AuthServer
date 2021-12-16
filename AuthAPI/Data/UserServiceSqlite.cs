@@ -25,11 +25,6 @@ namespace MoneyTrackDatabaseAPI.Data
             _securityService = securityService;
         }
 
-        public async Task<IList<User>> GetAllUsers()
-        {
-            return await dbContext.Users.ToListAsync();
-        }
-
         public async Task<User> Register(User user)
         {
 
@@ -50,19 +45,22 @@ namespace MoneyTrackDatabaseAPI.Data
             {
                 throw new Exception("Access denied!");
             }
-            User toRemove = await dbContext.Users.FirstAsync(f => f.Id == _authService.AuthModel.UserId);
+            User toRemove = await dbContext.Users.Include(f=>f.Devices).FirstAsync(f => f.Id == _authService.AuthModel.UserId);
             dbContext.Remove(toRemove);
             await dbContext.SaveChangesAsync();
+            
             return toRemove;
         }
 
         public async Task<User> Validate(string email, string password)
         {
-            User found = await dbContext.Users.FirstAsync(f => f.Email.Equals(email));
-            if (_securityService.VerifyHash(password,found.Salt,found.Password))
-                return found;
-            
-            throw new Exception("Password or email incorrect");
+            User found = await dbContext.Users.Include(f=>f.Devices).FirstAsync(f => f.Email.Equals(email));
+            if (!_securityService.VerifyHash(password, found.Salt, found.Password))
+                throw new Exception("Password or email incorrect");
+            found.Salt = null;
+            found.Password = null;
+            found.HashVersion = null;
+            return found;
         }
         
         public async Task<User> Update(User user)
@@ -75,14 +73,47 @@ namespace MoneyTrackDatabaseAPI.Data
             {
                 throw new Exception("Unauthorized");
             }
-            User toUpdate = await dbContext.Users.FirstAsync(f => f.Id == user.Id);
+            User toUpdate = await dbContext.Users.Include(f=>f.Devices).FirstAsync(f => f.Id == user.Id);
             toUpdate.Email = user.Email;
             toUpdate.Name = user.Name;
+            toUpdate.Password = user.Password;
             dbContext.Update(toUpdate);
             await dbContext.SaveChangesAsync();
+            toUpdate.Salt = null;
+            toUpdate.Password = null;
+            toUpdate.HashVersion = null;
             return toUpdate;
         }
-        
-        
+
+        public async Task<User> AddDevice(string eui)
+        {
+            if(_authService.AuthModel==null)
+            {
+                throw new Exception("Access denied!");
+            }
+            User toUpdate = await dbContext.Users.Include(f=>f.Devices).FirstAsync(f =>f.Id == _authService.AuthModel.UserId);
+            toUpdate.Devices.Add(new Device(eui));
+            await dbContext.SaveChangesAsync();
+            toUpdate.Salt = null;
+            toUpdate.Password = null;
+            toUpdate.HashVersion = null;
+            return toUpdate;
+        }
+
+        public async Task<User> DeleteDevice(string eui)
+        {
+            if(_authService.AuthModel==null)
+            {
+                throw new Exception("Access denied!");
+            }
+            User found = await dbContext.Users.Include(f=>f.Devices).FirstAsync(f =>f.Id == _authService.AuthModel.UserId);
+            Device deleted = found.Devices.Find(d=>d.Eui.Equals(eui));
+            dbContext.Remove(deleted);
+            await dbContext.SaveChangesAsync();
+            found.Salt = null;
+            found.Password = null;
+            found.HashVersion = null;
+            return found;
+        }
     }
 }

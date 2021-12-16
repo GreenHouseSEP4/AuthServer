@@ -11,5 +11,8 @@ namespace MoneyTrackDatabaseAPI.Data
         Task<User> Delete();
         Task<User> Validate(string email,string password);
         Task<User> Update(User user);
+
+        Task<User> AddDevice(string eui);
+        Task<User> DeleteDevice(string eui);
     }
 }

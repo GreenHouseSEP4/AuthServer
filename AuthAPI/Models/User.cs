@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,5 +23,6 @@ namespace MoneyTrackDatabaseAPI.Models
         public string ApiVersion { get; set; }
         public DateTime RegistrationDate { get; set; }
         public bool EmailConfirmed { get; set; }
+        public List<Device> Devices { get; set; }
     }
 }

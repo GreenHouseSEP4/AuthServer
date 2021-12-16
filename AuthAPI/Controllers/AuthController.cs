@@ -33,12 +33,13 @@ namespace MoneyTrackDatabaseAPI.Controllers
             try
             {
                 var returnedUser = await userService.Validate(user.Email,user.Password);
-                var dict = new Dictionary<string, string>();
+                var dict = new Dictionary<string, Object>();
                 var refreshToken = await authService.GenerateRefreshToken(returnedUser.Id);
                 await tokenService.AddToken(refreshToken);
                 var accessToken = await authService.GenerateAccessToken(refreshToken);
                 
                 dict.Add("token", accessToken);
+                dict.Add("user", returnedUser);
                 CookieOptions cookieOptions = new CookieOptions();
                 // cookieOptions.Secure = true;
                 cookieOptions.HttpOnly = true;

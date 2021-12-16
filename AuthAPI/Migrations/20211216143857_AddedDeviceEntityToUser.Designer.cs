@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoneyTrackDatabaseAPI.DataAccess;
 
 namespace MoneyTrackDatabaseAPI.Migrations
 {
     [DbContext(typeof(UserCredentialsDbContext))]
-    partial class UserCredentialsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211216143857_AddedDeviceEntityToUser")]
+    partial class AddedDeviceEntityToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

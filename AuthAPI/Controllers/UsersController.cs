@@ -47,6 +47,36 @@ namespace MoneyTrackDatabaseAPI.Controllers
                 return StatusCode(400, new ApiError(e.Message));
             }
         }
+        [HttpPost]
+        [Route("addDevice")]
+        public async Task<ActionResult<User>> AddDevice([FromQuery(Name = "eui")] String eui)
+        {
+            try
+            {
+                User user = await userService.AddDevice(eui);
+                return Ok(user);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(400, new ApiError(e.Message));
+            }
+        }
+        [HttpDelete]
+        [Route("deleteDevice")]
+        public async Task<ActionResult<User>> DeleteDevice([FromQuery(Name = "eui")] String eui)
+        {
+            try
+            {
+                User user = await userService.DeleteDevice(eui);
+                return Ok(user);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(400, new ApiError(e.Message));
+            }
+        }
 
         [HttpDelete]
         [Route("deleteProfile")]
