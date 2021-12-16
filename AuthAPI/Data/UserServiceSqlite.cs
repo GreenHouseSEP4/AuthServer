@@ -92,8 +92,12 @@ namespace MoneyTrackDatabaseAPI.Data
                 throw new Exception("Access denied!");
             }
             User toUpdate = await dbContext.Users.Include(f=>f.Devices).FirstAsync(f =>f.Id == _authService.AuthModel.UserId);
-            toUpdate.Devices.Add(new Device(eui));
-            await dbContext.SaveChangesAsync();
+            var contains = toUpdate.Devices.Where(u => u.Eui.Equals(eui)).ToList();
+            if(contains.Count==0)
+            {
+                toUpdate.Devices.Add(new Device(eui));
+                await dbContext.SaveChangesAsync();
+            }
             toUpdate.Salt = null;
             toUpdate.Password = null;
             toUpdate.HashVersion = null;
