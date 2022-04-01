@@ -9,7 +9,7 @@ namespace MoneyTrackDatabaseAPI.DataAccess
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source = users.db");
+            optionsBuilder.UseSqlite("Data Source = credentials.db");
         }
         
         protected override void OnModelCreating(ModelBuilder builder)

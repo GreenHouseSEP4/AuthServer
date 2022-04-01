@@ -17,7 +17,7 @@ using MoneyTrackDatabaseAPI.DataAccess;
 using MoneyTrackDatabaseAPI.Models;
 using MoneyTrackDatabaseAPI.Services;
 
-namespace BurgerAPI
+namespace AuthAPI
 {
     public class Startup
     {
@@ -73,7 +73,7 @@ namespace BurgerAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Burger API v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auth API v1"));
             }
 
             app.UseRouting();

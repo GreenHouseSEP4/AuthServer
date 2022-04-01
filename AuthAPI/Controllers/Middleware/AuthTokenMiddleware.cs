@@ -42,7 +42,7 @@ namespace MoneyTrackDatabaseAPI.Controllers.Middleware
             catch (Exception e)
             {
                 authService.AuthModel = null;
-                context.Response.StatusCode = 403;
+                context.Response.StatusCode = 401;
                 var response = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new ApiError(e.Message)));
                 await context.Response.Body.WriteAsync(response,0,response.Length) ;
                 return;
